@@ -1,0 +1,25 @@
+name: Daily Dummy Commit
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Runs daily at 08:00 UTC
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update ping file
+        run: |
+          echo "Last ping: $(date)" > .last_ping.txt
+          git add .last_ping.txt
+          git commit -m "Daily ping to keep Streamlit app awake" || echo "No changes to commit"
+          git push
