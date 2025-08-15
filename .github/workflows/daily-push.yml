@@ -1,25 +1,37 @@
+# This workflow is a daily dummy commit to keep a Streamlit app awake on a free tier service.
+# It runs once a day at a scheduled time (08:00 UTC).
+
 name: Daily Dummy Commit
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Runs daily at 08:00 UTC
+    - cron: '0 9 * * *'  # Runs daily at 09:00 UTC
 
 jobs:
   daily-commit:
+    # Set the runner environment
     runs-on: ubuntu-latest
+    
+    # Grant write permissions to the job to allow it to push changes.
+    # This is crucial for the git push command to succeed.
     permissions:
-                contents: write
+      contents: write
 
     steps:
       - name: Checkout repository
+        # This action checks out your repository under $GITHUB_WORKSPACE, so your workflow can access it.
         uses: actions/checkout@v3
 
       - name: Configure Git
+        # Configures the git user name and email for the commit.
+        # This is required for committing changes.
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Update ping file
+        # Creates or updates a file with the current date, then commits and pushes it.
+        # The `|| echo "No changes to commit"` part prevents the workflow from failing if there are no changes to the file.
         run: |
           echo "Last ping: $(date)" > .last_ping.txt
           git add .last_ping.txt
