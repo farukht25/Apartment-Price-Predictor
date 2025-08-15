@@ -1,4 +1,5 @@
 Apartment Price Predictor 🏠
+
 This project provides a machine learning model and a web application for predicting apartment prices based on various features. The core of the project is a data analysis and modeling pipeline developed in a Jupyter Notebook, which is then used to power a user-friendly application built with Streamlit.
 
 ✨ Features
